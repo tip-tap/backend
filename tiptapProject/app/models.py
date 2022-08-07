@@ -200,7 +200,7 @@ class Room(models.Model):
 class Checklist(models.Model):
     checklist_id = models.AutoField(primary_key=True)
     roomInfo = models.OneToOneField(RoomInfo, on_delete=models.CASCADE)
-    room = models.ForeignKey(Room, on_delete=models.SET_NULL)
+    room = models.ForeignKey(Room, blank=True, null=True, on_delete=models.SET_NULL)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE
     )

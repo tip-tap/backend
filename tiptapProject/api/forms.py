@@ -1,30 +1,3 @@
 from django import forms
 
-from app.models import *
-
-
-### 체크리스트 API ###
-class BasicInfoForm(forms.ModelForm):
-    class Meta:
-        model = BasicInfo
-        fields = "__all__"
-
-
-class DetailInfoForm(forms.ModelForm):
-    class Meta:
-        model = DetailInfo
-        fields = "__all__"
-
-
-class OptionForm(forms.ModelForm):
-
-    class Meta:
-        model = Option
-        fields = "__all__"
-#
-#
-# class CheckListForm(forms.ModelForm):
-#     class Meta:
-#         model = CheckList
-#         fields = "__all__"
-#
+# Create your forms here.
