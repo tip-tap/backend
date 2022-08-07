@@ -1,19 +1,6 @@
 from rest_framework import serializers
 
-from app.models import BasicInfo, DetailInfo, Option
-
-
-# ModelSerializer 이용
-class DetailInfoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = DetailInfo
-        fields = "__all__"
-
-
-class OptionSubSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Option
-        fields = "__all__"
+from app.models import BasicInfo, DetailInfo, Option, Image, CheckList, Room, Tag
 
 
 class BasicInfoSerializer(serializers.ModelSerializer):
@@ -26,20 +13,49 @@ class BasicInfoSerializer(serializers.ModelSerializer):
         for i in images:
             image_list.append(i.image.url)
         return image_list
-
     class Meta:
         model = BasicInfo
-        fields = "__all__"
+        fields = '__all__'
 
 
-# Serializer 이용
-class CheckListSerializer(serializers.Serializer):
-    room_id = serializers.IntegerField(allow_null=True, default=None)
-    location_x = serializers.DecimalField(max_digits=10, decimal_places=7)
-    location_y = serializers.DecimalField(max_digits=10, decimal_places=7)
-    broker_agency_name = serializers.CharField(default=None, max_length=20, allow_null=True, allow_blank=True)
-    broker_agency_contact = serializers.CharField(default=None, max_length=20, allow_null=True, allow_blank=True)
+class DetailInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DetailInfo
+        fields = '__all__'
 
-    basicInfo = BasicInfoSerializer(allow_null=True)
-    option = OptionSubSerializer(allow_null=True)
-    detailInfo = DetailInfoSerializer(allow_null=True)
+
+class OptionSubSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Option
+        fields = '__all__'
+
+
+class ChecklistSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CheckList
+        fields = '__all__'
+
+
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = '__all__'
+
+
+class RoomSerializer(serializers.ModelSerializer):
+    basicInfo = BasicInfoSerializer() # TODO: 디버깅 후 read_only=True로 설정
+    options = OptionSubSerializer()
+    tag = TagSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = Room
+        fields = '__all__'
+    
+    def create(self, validated_data):
+        basicInfo = BasicInfo.objects.create(**validated_data.pop('basicInfo'))
+        options = Option.objects.create(**validated_data.pop('options'))
+        # tag = Tag.objects.create(**validated_data.pop('tag'))
+
+        room = Room.objects.create(basicInfo=basicInfo, options=options, tag=tag, **validated_data)
+
+        return room

@@ -3,7 +3,7 @@ from django import forms
 from app.models import *
 
 
-
+### 체크리스트 API ###
 class BasicInfoForm(forms.ModelForm):
     class Meta:
         model = BasicInfo

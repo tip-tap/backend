@@ -163,14 +163,13 @@ class Option(models.Model):
 
 class Room(models.Model):
     room_id = models.AutoField(primary_key=True)
-    options = models.ForeignKey(Option, on_delete=models.CASCADE)
+    options = models.OneToOneField(Option, on_delete=models.CASCADE)
     # checklist_id = models.ForeignKey(CheckList, on_delete=models.CASCADE, null=True)
     room_update_dt = models.DateTimeField(auto_now_add=True)
     # location = models.OneToOneField(Location, on_delete=models.CASCADE)
     basicInfo = models.OneToOneField(BasicInfo, on_delete=models.CASCADE)
-    #
     tag = models.ManyToManyField("Tag", blank=True)
-    brokerAgency = models.ManyToManyField("BrokerAgency", blank=True)
+    #brokerAgency = models.ManyToManyField("BrokerAgency", blank=True)
     location_x = models.DecimalField(
         max_digits=10, decimal_places=7, null=True, blank=True
     )  # 위도
