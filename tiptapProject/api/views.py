@@ -6,6 +6,7 @@ from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
 from api.serializers import ChecklistSerializer
 from app.models import Checklist, Image
+from app.utils import string_to_list
 from tiptapProject.settings import MEDIA_ROOT
 
 
@@ -13,8 +14,17 @@ class ChecklistAPIView(ModelViewSet):
     queryset = Checklist.objects.all()
     serializer_class = ChecklistSerializer
 
+    # http://127.0.0.1:8000/api/v1/checklist/?location=[[0,0],[1,1],[3,3]] # 왼쪽 아래, 중심, 오른쪽 위
     def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
+        left_bottom, middle, right_top = string_to_list(request.GET.get("location"))
+        check = Checklist.objects.select_related("roomInfo").extra(
+            select={'manhattan_distance': f'ABS(basicInfo_location_x - {middle[0]}) + ABS(basicInfo_location_y - {middle[1]})'},
+            where={f'''basicInfo_location_x > {left_bottom[0]} and basicInfo_location_y > {left_bottom[1]}
+                   and basicInfo_location_x < {right_top[0]} and basicInfo_location_y <{right_top[1]}'''}
+        ).order_by('manhattan_distance')
+
+
+        queryset = self.filter_queryset(check)
 
         page = self.paginate_queryset(queryset)
         if page is not None:

@@ -13,3 +13,8 @@ def rename_imagefile_to_uuid(instance, filename):
     return os.path.join(upload_to, filename)
 
 
+#  "[[0, 0], [1, 1], [2, 2]]" -> (['0', '0'], ['1', '1'], ['2', '2'])
+def string_to_list(loc : str) -> tuple[list[str], list[str], list[str]]:
+    locs = loc.replace("[", "").replace("]","").replace(" ", "").split(",")
+    return [locs[0],locs[1]],[locs[2],locs[3]],[locs[4],locs[5]]
+
