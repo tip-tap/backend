@@ -190,11 +190,8 @@ class Tag(models.Model):
 class Room(models.Model):
     room_id = models.AutoField(primary_key=True)
     roomInfo = models.OneToOneField(RoomInfo, on_delete=models.CASCADE)
-    brokerAgency = models.ForeignKey(BrokerAgency, on_delete=models.CASCADE, blank=True, null=True)
-    # tag = models.ManyToManyField(Tag, blank=True, null=True)
-    tag = models.ManyToManyField(Tag)
-
-    # TODO: tag 추가하기
+    brokerAgency = models.ForeignKey(BrokerAgency, on_delete=models.CASCADE)
+    tag = models.ManyToManyField(Tag, blank=True, null=True)
 
 
 ### 체크리스트 ###
