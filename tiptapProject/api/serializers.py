@@ -1,15 +1,16 @@
 from rest_framework import serializers
 
 # Create your serializers here.
-from app.models import CheckList, RoomInfo, Room, Image
+from app.models import Checklist, RoomInfo, Room, Image
 
 
 class RoomInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = RoomInfo
-        exclude = ('roominfo_id', )
+        exclude = ('roominfo_id',)
 
-class CheckListSerializer(serializers.ModelSerializer):
+
+class ChecklistSerializer(serializers.ModelSerializer):
     roomInfo = RoomInfoSerializer(allow_null=True)
     images = serializers.SerializerMethodField()
 
@@ -21,13 +22,23 @@ class CheckListSerializer(serializers.ModelSerializer):
         return image_list
 
     class Meta:
-        model = CheckList
-        exclude = ('user', )
+        model = Checklist
+        exclude = ('user',)
 
     def create(self, validated_data):
         roomInfo = RoomInfo.objects.create(**validated_data.pop('roomInfo'))
         room = validated_data.get("room")
         for image in self.context['request'].FILES.getlist('image'):
             Image.objects.create(roomInfo=roomInfo, image=image)
-        return CheckList.objects.create(roomInfo=roomInfo, user_id=1, room=room)
+        return Checklist.objects.create(roomInfo=roomInfo, user_id=1, room=room)
 
+
+class ImageSerializer(serializers.Serializer):
+    checklist_id = serializers.IntegerField()
+    image = serializers.ImageField()
+
+    def create(self, validated_data):
+        check = validated_data.get("checklist_id")
+        image = validated_data.get("image")
+        roomInfo = Checklist.objects.filter(checklist_id=check).get().roomInfo
+        return Image.objects.create(roomInfo=roomInfo, image=image)

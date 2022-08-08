@@ -1,4 +1,5 @@
 import os
+from typing import Tuple, List
 from uuid import uuid4
 
 
@@ -10,3 +11,5 @@ def rename_imagefile_to_uuid(instance, filename):
     filename = '{}.{}'.format(uuid, ext)
 
     return os.path.join(upload_to, filename)
+
+
