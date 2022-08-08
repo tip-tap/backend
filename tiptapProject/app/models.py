@@ -178,7 +178,7 @@ class RoomInfo(models.Model):
 
 
 class Image(models.Model):
-    basicInfo = models.ForeignKey(RoomInfo, on_delete=models.CASCADE)
+    roomInfo = models.ForeignKey(RoomInfo, on_delete=models.CASCADE)
     image = models.ImageField(upload_to=rename_imagefile_to_uuid)
 
 
@@ -190,14 +190,15 @@ class Tag(models.Model):
 class Room(models.Model):
     room_id = models.AutoField(primary_key=True)
     roomInfo = models.OneToOneField(RoomInfo, on_delete=models.CASCADE)
-    brokerAgency = models.ForeignKey(BrokerAgency, on_delete=models.CASCADE)
-    tag = models.ManyToManyField(Tag, blank=True, null=True)
+    brokerAgency = models.ForeignKey(BrokerAgency, on_delete=models.CASCADE, blank=True, null=True)
+    # tag = models.ManyToManyField(Tag, blank=True, null=True)
+    tag = models.ManyToManyField(Tag)
 
     # TODO: tag 추가하기
 
 
 ### 체크리스트 ###
-class Checklist(models.Model):
+class CheckList(models.Model):
     checklist_id = models.AutoField(primary_key=True)
     roomInfo = models.OneToOneField(RoomInfo, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, blank=True, null=True, on_delete=models.SET_NULL)
@@ -222,4 +223,4 @@ class ConfirmedRoom(models.Model):
         settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE
     )
     room = models.ForeignKey(Room, on_delete=models.DO_NOTHING)
-    checklist = models.ForeignKey(Checklist, on_delete=models.CASCADE)
+    checklist = models.ForeignKey(CheckList, on_delete=models.CASCADE)
