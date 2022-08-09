@@ -1,14 +1,13 @@
-from django.contrib.auth.models import User
 from django.conf import settings
 from django.db import models
 
-from app.utils import rename_imagefile_to_uuid
+from .utils import rename_imagefile_to_uuid
+
 
 
 ### 공인중개사 정보 ###
 class BrokerAgency(models.Model):
     brokerAgency_id = models.AutoField(primary_key=True)
-    # brokersManner_id
     brokerAgency_name = models.CharField(max_length=20)  # 공인 중개사 이름
     brokerAgency_representative_name = models.CharField(max_length=20)  # 대표 이름
     brokerAgency_number1 = models.CharField(max_length=20)
@@ -190,8 +189,9 @@ class Tag(models.Model):
 class Room(models.Model):
     room_id = models.AutoField(primary_key=True)
     roomInfo = models.OneToOneField(RoomInfo, on_delete=models.CASCADE)
-    brokerAgency = models.ForeignKey(BrokerAgency, on_delete=models.CASCADE)
-    tag = models.ManyToManyField(Tag, blank=True, null=True)
+    brokerAgency = models.ForeignKey(BrokerAgency, on_delete=models.CASCADE, blank=True, null=True)
+    # tag = models.ManyToManyField(Tag, blank=True, null=True)
+    tag = models.ManyToManyField(Tag)
 
 
 ### 체크리스트 ###
@@ -199,9 +199,7 @@ class CheckList(models.Model):
     checklist_id = models.AutoField(primary_key=True)
     roomInfo = models.OneToOneField(RoomInfo, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, blank=True, null=True, on_delete=models.SET_NULL)
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE
-    )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE)
 
 
 ### 관심 매물 ###
