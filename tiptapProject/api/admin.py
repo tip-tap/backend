@@ -6,6 +6,3 @@ from django.contrib import admin
 # admin 페이지에서 확인할 모델 추가
 from app.models import Checklist, RoomInfo, Room
 
-admin.register(Checklist)
-admin.register(RoomInfo)
-admin.register(Room)

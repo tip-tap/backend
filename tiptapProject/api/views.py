@@ -6,7 +6,7 @@ from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
 from api.serializers import ChecklistSerializer
 from app.models import Checklist, Image
-from app.utils import string_to_list
+from app.utils import string_to_list, remove_image
 from tiptapProject.settings import MEDIA_ROOT
 
 
@@ -14,17 +14,8 @@ class ChecklistAPIView(ModelViewSet):
     queryset = Checklist.objects.all()
     serializer_class = ChecklistSerializer
 
-    # http://127.0.0.1:8000/api/v1/checklist?location=[[0,0],[1,1],[3,3]] # 왼쪽 아래, 중심, 오른쪽 위
     def list(self, request, *args, **kwargs):
-        left_bottom, middle, right_top = string_to_list(request.GET.get("location","[[-100,-100],[0,0],[200,200]]")) #location없으면 기본 값 가져옴
-        check = Checklist.objects.select_related("roomInfo").extra(
-            select={'manhattan_distance': f'ABS(basicInfo_location_x - {middle[0]}) + ABS(basicInfo_location_y - {middle[1]})'},
-            where={f'''basicInfo_location_x > {left_bottom[0]} and basicInfo_location_y > {left_bottom[1]}
-                   and basicInfo_location_x < {right_top[0]} and basicInfo_location_y <{right_top[1]}'''}
-        ).order_by('manhattan_distance')
-
-
-        queryset = self.filter_queryset(check)
+        queryset = self.filter_queryset(self.get_queryset())
 
         page = self.paginate_queryset(queryset)
         if page is not None:
@@ -36,13 +27,49 @@ class ChecklistAPIView(ModelViewSet):
         response_data = { "total" : len(serializer.data), "checklists" : serializer.data}
         return Response(response_data)
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        headers = self.get_success_headers(serializer.data)
+        response_data = {
+            "message" : "체크리스트 저장 성공",
+            "data" : serializer.data
+        }
+        return Response(response_data, status=status.HTTP_201_CREATED, headers=headers)
+
+    """ Room은 수정 불가, 이미지는 이미지 API 이용하여 하나하나 추가, 삭제 해야함 """
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            instance._prefetched_objects_cache = {}
+        return Response(serializer.data)
+
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        roomInfo = instance.roomInfo
+        image_set = Image.objects.filter(roomInfo=roomInfo)
+        for image in image_set:
+            remove_image(image.image.url)
+        roomInfo.delete()
+        instance.delete()
+        response_data = {
+            "message" : "체크리스트 삭제 성공",
+        }
+        return Response(response_data, status=status.HTTP_204_NO_CONTENT)
+
+
+
 
 class ChecklistImageAPIView(GenericViewSet):
     def destroy(self, request, *args, **kwargs):
-        image_url = request.data.get("image")[7:]
-        Image.objects.filter(image=image_url).get().delete()
-        image = os.path.join(MEDIA_ROOT, image_url)
-        os.remove(image)
+        remove_image(request.data.get("image"))
         response_data = {
             "message"  : "이미지 삭제 성공"
         }
