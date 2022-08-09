@@ -1,31 +1,37 @@
+from django.contrib.auth.models import User
 from django.conf import settings
 from django.db import models
-
-from .utils import rename_imagefile_to_uuid
-
+from django.core.validators import RegexValidator
+from app.utils import rename_imagefile_to_uuid
 
 
 ### 공인중개사 정보 ###
 class BrokerAgency(models.Model):
     brokerAgency_id = models.AutoField(primary_key=True)
+    user = models.ManyToManyField(settings.AUTH_USER_MODEL, default=1, blank=True)
+
     brokerAgency_name = models.CharField(max_length=20)  # 공인 중개사 이름
     brokerAgency_representative_name = models.CharField(max_length=20)  # 대표 이름
-    brokerAgency_number1 = models.CharField(max_length=20)
-    brokerAgency_number2 = models.CharField(max_length=20, blank=True, null=True)
+
+
+    phoneNumberRegex = RegexValidator(regex=r'^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$')
+    brokerAgency_number1 = models.CharField(validators=[phoneNumberRegex], max_length=20)
+    brokerAgency_number2 = models.CharField(validators=[phoneNumberRegex], max_length=20, blank=True, null=True)
+
     brokerAgency_location = models.TextField()  # 주소 ?/??/
-    brokerAgency_company_registration_number = models.IntegerField()
-    brokerAgency_registration_number = models.IntegerField()
+
+    # 필드 데이터 타입 변경 Integer -> Char
+    brokerAgency_company_registration_number = models.CharField(max_length=12)  # 사업자등록번호 규칙 : OOO-OO-OOOO
+    brokerAgency_registration_number = models.CharField(max_length=30)  # 부동산 등록번호
+
     brokerAgency_created_at = models.DateTimeField(auto_now_add=True)
     brokerAgency_updated_at = models.DateTimeField(auto_now=True)
-    user = models.ManyToManyField(settings.AUTH_USER_MODEL, default=1, blank=True)
+
 
 
 class BrokersManner(models.Model):
     brokerManner_id = models.AutoField(primary_key=True)
     brokerAgency = models.ForeignKey(BrokerAgency, on_delete=models.CASCADE)
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE
-    )
     brokersManner_score = models.FloatField()
 
 
@@ -58,31 +64,31 @@ class RoomInfo(models.Model):
         ("", "not selected"),
     ]
 
-    basicInfo_location_x = models.DecimalField(max_digits=10, decimal_places=7) # 위도
-    basicInfo_location_y = models.DecimalField(max_digits=10, decimal_places=7) # 경도
+    basicInfo_location_x = models.DecimalField(max_digits=10, decimal_places=7)  # 위도
+    basicInfo_location_y = models.DecimalField(max_digits=10, decimal_places=7)  # 경도
 
     # TODO: 공인중개사 어떻게 할지(공인중개사 필드를 텍스트로 두고, 매물의 경우 공인중개사 정보를 텍스트로 가져올 수 있어야 함)
-    basicInfo_brokerAgency = models.TextField(blank=True, null=True) # 공인중개사
-    
-    basicInfo_move_in_date = models.TextField(blank=True, null=True) # 입주 가능일
-    
-    # TODO: 공인중개사 연락처 어떻게 할지
-    basicInfo_brokerAgency_contact = models.TextField(blank=True, null=True) # 연락처
+    basicInfo_brokerAgency = models.TextField(blank=True, null=True)  # 공인중개사
+
+    basicInfo_move_in_date = models.TextField(blank=True, null=True)  # 입주 가능일
+
+    phoneNumberRegex = RegexValidator(regex=r'^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$')
+    basicInfo_brokerAgency_contact = models.CharField(validators=[phoneNumberRegex], max_length=20, null=True)
 
     basicInfo_room_type = models.CharField(
         choices=ROOM_TYPE, max_length=2, blank=True, null=True
     )
-    basicInfo_deposit = models.IntegerField(blank=True, null=True) # 보증금
-    basicInfo_monthly_rent = models.IntegerField(blank=True, null=True) # 월세
-    basicInfo_maintenance_fee = models.IntegerField(blank=True, null=True) # 관리비
-    basicInfo_floor = models.IntegerField(blank=True, null=True) # 해당층
-    basicInfo_area = models.FloatField(blank=True, null=True) # 평 수
+    basicInfo_deposit = models.IntegerField(blank=True, null=True)  # 보증금
+    basicInfo_monthly_rent = models.IntegerField(blank=True, null=True)  # 월세
+    basicInfo_maintenance_fee = models.IntegerField(blank=True, null=True)  # 관리비
+    basicInfo_floor = models.IntegerField(blank=True, null=True)  # 해당층
+    basicInfo_area = models.FloatField(blank=True, null=True)  # 평 수
     basicInfo_number_of_rooms = models.CharField(
         choices=NUMBER_OF_ROOMS, max_length=3, blank=True, null=True
-    ) # 방 수
+    )  # 방 수
     basicInfo_interior_structure = models.CharField(
         choices=INTERIOR_STRUCTURE, max_length=2, blank=True, null=True
-    ) # 내부 구조
+    )  # 내부 구조
 
     ### 옵션 ###
     option_gas_stove = models.BooleanField(default=False)
@@ -171,13 +177,8 @@ class RoomInfo(models.Model):
         blank=True, max_length=1, choices=STRENGTH, null=True
     )  # 온수: 세다, 보통이다, 약하다
 
-    ### 이미지 ###
-
-    # TODO. 이미지 처리 어떻게 할지
-
-
 class Image(models.Model):
-    roomInfo = models.ForeignKey(RoomInfo, on_delete=models.CASCADE)
+    roomInfo = models.ForeignKey(RoomInfo, on_delete=models.CASCADE, null=True)
     image = models.ImageField(upload_to=rename_imagefile_to_uuid)
 
 
@@ -185,22 +186,22 @@ class Tag(models.Model):
     tag_id = models.AutoField(primary_key=True)
     tag_name = models.CharField(max_length=20)
 
+
 ### 매물 ###
 class Room(models.Model):
     room_id = models.AutoField(primary_key=True)
-    roomInfo = models.OneToOneField(RoomInfo, on_delete=models.CASCADE)
+    roomInfo = models.OneToOneField(RoomInfo, on_delete=models.CASCADE, null=True)
     brokerAgency = models.ForeignKey(BrokerAgency, on_delete=models.CASCADE, blank=True, null=True)
-    # tag = models.ManyToManyField(Tag, blank=True, null=True)
     tag = models.ManyToManyField(Tag)
 
 
 ### 체크리스트 ###
 class CheckList(models.Model):
     checklist_id = models.AutoField(primary_key=True)
-    roomInfo = models.OneToOneField(RoomInfo, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, blank=True, null=True, on_delete=models.SET_NULL)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE)
-
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE
+    )
 
 ### 관심 매물 ###
 class Interest(models.Model):
@@ -208,13 +209,8 @@ class Interest(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE
     )
-    room = models.ForeignKey(Room, related_name='interest', on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
 
-    def __unicode__(self):
-        return self.interest_id
-
-
-### 확정 매물 ###
 class ConfirmedRoom(models.Model):
     confirmedRoom_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(
