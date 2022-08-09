@@ -1,5 +1,6 @@
+from asyncore import read
 from rest_framework import serializers
-from app.models import BrokerAgency, CheckList, Image, Room, RoomInfo, Tag
+from app.models import BrokerAgency, CheckList, Image, Interest, Room, RoomInfo, Tag
 
 # RoomInfoSerializer: Created by @ssanghy on checklist
 class RoomInfoForRoomSerializer(serializers.ModelSerializer):
@@ -26,17 +27,28 @@ class RoomInfoForRoomSerializer(serializers.ModelSerializer):
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = '__all__'
+        exclude = ('tag_id',)
+    
+    def to_representation(self, instance):
+        if instance:
+            return instance.tag_name
 
 
 class BrokerAgencySerializer(serializers.ModelSerializer):
-    class Meta:
         model = BrokerAgency
         fields = ('brokerAgency_id', 'brokerAgency_name', 'brokerAgency_number1')
 
 
+class InterestForRoomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Interest
+        fields = ('interest_id',)
+
 class RoomSerializer(serializers.ModelSerializer):
     roomInfo = RoomInfoForRoomSerializer()
+    #interest = InterestRelatedField(read_only=True)
+    #interest = serializers.RelatedField(read_only=True)
+    interest = InterestForRoomSerializer(many=True, read_only=True)
     tag = TagSerializer(many=True, read_only=True)
     thumbnail = serializers.SerializerMethodField()
     images = serializers.SerializerMethodField()
@@ -53,6 +65,11 @@ class RoomSerializer(serializers.ModelSerializer):
         for i in images:
             image_list.append(i.image.url)
         return image_list
+
+    def to_representation(self, instance):
+        output = super().to_representation(instance)
+        output["interest"] = bool(output["interest"])
+        return output
 
     class Meta:
         model = Room
