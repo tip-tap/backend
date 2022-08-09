@@ -1,7 +1,6 @@
-from asyncore import read
 from rest_framework import serializers
 from rest_framework.utils import model_meta
-from app.models import BrokerAgency, Checklist, Image, Interest, Room, RoomInfo, Tag
+from app.models import BrokerAgency, CheckList, Image, Interest, Room, RoomInfo, Tag
 
 # RoomInfoSerializer: Created by @ssanghy on checklist
 class RoomInfoForRoomSerializer(serializers.ModelSerializer):
@@ -87,7 +86,7 @@ class ChecklistSerializer(serializers.ModelSerializer):
             image_list.append(i.image.url)
         return image_list
     class Meta:
-        model = Checklist
+        model = CheckList
         exclude = ('user',)
 
     def create(self, validated_data):
@@ -96,7 +95,7 @@ class ChecklistSerializer(serializers.ModelSerializer):
         room = validated_data.get("room")
         for image in self.context['request'].FILES.getlist('image'):
             Image.objects.create(roomInfo=roomInfo, image=image)
-        return Checklist.objects.create(roomInfo=roomInfo, user_id=1, room=room)
+        return CheckList.objects.create(roomInfo=roomInfo, user_id=1, room=room)
 
     """ Room은 수정 불가, 이미지는 이미지 API 이용하여 추가, 삭제 해야함 """
     def update(self, instance, validated_data):
@@ -125,7 +124,7 @@ class ImageSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         check = validated_data.get("checklist_id")
-        roomInfo = Checklist.objects.get(checklist_id=check).roomInfo
+        roomInfo = CheckList.objects.get(checklist_id=check).roomInfo
         images_added = []
         for image in self.initial_data.getlist("image"):
             img = Image.objects.create(roomInfo=roomInfo, image=image)
