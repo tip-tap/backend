@@ -4,10 +4,9 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
-from api.serializers import ChecklistSerializer
+from api.serializers import ChecklistSerializer, ImageSerializer
 from app.models import Checklist, Image
-from app.utils import string_to_list, remove_image
-from tiptapProject.settings import MEDIA_ROOT
+from app.utils import remove_image
 
 
 class ChecklistAPIView(ModelViewSet):
@@ -77,11 +76,11 @@ class ChecklistImageAPIView(GenericViewSet):
 
 
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+        serializer = ImageSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        image = serializer.save()
+        added_images = serializer.save()
         response_data = {
             "message" : "이미지 추가 성공",
-            "image" : image.image.url,
+            "added_images" : added_images
         }
         return Response(response_data, status=status.HTTP_201_CREATED)

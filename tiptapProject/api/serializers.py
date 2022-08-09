@@ -59,8 +59,15 @@ class ImageSerializer(serializers.Serializer):
     checklist_id = serializers.IntegerField()
     image = serializers.ImageField()
 
+
     def create(self, validated_data):
         check = validated_data.get("checklist_id")
-        image = validated_data.get("image")
-        roomInfo = Checklist.objects.filter(checklist_id=check).get().roomInfo
-        return Image.objects.create(roomInfo=roomInfo, image=image)
+        roomInfo = Checklist.objects.get(checklist_id=check).roomInfo
+        images_added = []
+        for image in self.initial_data.getlist("image"):
+            img = Image.objects.create(roomInfo=roomInfo, image=image)
+            images_added.append(img.image.url)
+        return images_added
+
+
+
