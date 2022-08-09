@@ -210,7 +210,10 @@ class Interest(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE
     )
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, related_name='interest', on_delete=models.CASCADE)
+
+    def __unicode__(self):
+        return self.interest_id
 
 
 ### 확정 매물 ###
