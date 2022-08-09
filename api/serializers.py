@@ -1,5 +1,4 @@
 from rest_framework import serializers
-
 from app.models import Room, RoomInfo, Interest, Tag, BrokerAgency
 
 class RoomInfoForInterestSerializer(serializers.ModelSerializer):
@@ -25,22 +24,34 @@ class RoomInfoForInterestSerializer(serializers.ModelSerializer):
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = '__all__'
+        exclude = ('tag_id',)
+
+    def to_representation(self, instance):
+        if instance:
+            return instance.tag_name
 
 class BrokerAgencySerializer(serializers.ModelSerializer):
     class Meta:
         model = BrokerAgency
         fields = ('brokerAgency_id', 'brokerAgency_name', 'brokerAgency_number1')
 
-class RoomSerializer(serializers.ModelSerializer):
+class InterestSerializer(serializers.ModelSerializer):
     roomInfo = RoomInfoForInterestSerializer()
     tag = TagSerializer(many=True, read_only=True)
+    images = serializers.SerializerMethodField()
     thumbnail = serializers.SerializerMethodField()
     def get_thumbnail(self, obj):
         images = obj.roomInfo.image_set.all()
         if images:
             return images[0].image.url
         return []
+
+    def get_images(self, obj):
+        images = obj.roomInfo.image_set.all()
+        image_list = []
+        for i in images:
+            image_list.append(i.image.url)
+        return image_list
 
     class Meta:
         model = Room

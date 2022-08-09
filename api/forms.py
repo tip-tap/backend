@@ -2,8 +2,6 @@ from django import forms
 
 from app.models import *
 
-
-
 class BasicInfoForm(forms.ModelForm):
     class Meta:
         model = BasicInfo

@@ -1,14 +1,14 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-from api.serializers import RoomSerializer
+from api.serializers import InterestSerializer
 from app.models import Room, Interest
 from django.http import Http404
 
 
 class InterestAPIView(ModelViewSet):
     queryset = Interest.objects.all().order_by('interest_id')
-    serializer_class = RoomSerializer
+    serializer_class = InterestSerializer
 
     def get_interest(self, room_id, user_id):
         try:
@@ -18,7 +18,6 @@ class InterestAPIView(ModelViewSet):
 
     def is_duplicate(self, room_id, user_id):
         interest = list(Interest.objects.filter(room_id=room_id, user_id=user_id))
-        print(interest)
         if not interest:
             return False
         else:
