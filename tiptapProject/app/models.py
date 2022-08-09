@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.core.validators import RegexValidator
 
 from .utils import rename_imagefile_to_uuid
 
@@ -10,11 +11,13 @@ class BrokerAgency(models.Model):
     brokerAgency_id = models.AutoField(primary_key=True)
     brokerAgency_name = models.CharField(max_length=20)  # 공인 중개사 이름
     brokerAgency_representative_name = models.CharField(max_length=20)  # 대표 이름
-    brokerAgency_number1 = models.CharField(max_length=20)
-    brokerAgency_number2 = models.CharField(max_length=20, blank=True, null=True)
+    phoneNumberRegex = RegexValidator(regex=r'^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$')
+    brokerAgency_number1 = models.CharField(validators=[phoneNumberRegex], max_length=20)
+    brokerAgency_number2 = models.CharField(validators=[phoneNumberRegex], max_length=20, blank=True, null=True)
     brokerAgency_location = models.TextField()  # 주소 ?/??/
-    brokerAgency_company_registration_number = models.IntegerField()
-    brokerAgency_registration_number = models.IntegerField()
+    # 필드 데이터 타입 변경 Integer -> Char
+    brokerAgency_company_registration_number = models.CharField(max_length=12)  # 사업자등록번호 규칙 : OOO-OO-OOOO
+    brokerAgency_registration_number = models.CharField(max_length=30)  # 부동산 등록번호
     brokerAgency_created_at = models.DateTimeField(auto_now_add=True)
     brokerAgency_updated_at = models.DateTimeField(auto_now=True)
     user = models.ManyToManyField(settings.AUTH_USER_MODEL, default=1, blank=True)
@@ -67,7 +70,8 @@ class RoomInfo(models.Model):
     basicInfo_move_in_date = models.TextField(blank=True, null=True) # 입주 가능일
     
     # TODO: 공인중개사 연락처 어떻게 할지
-    basicInfo_brokerAgency_contact = models.TextField(blank=True, null=True) # 연락처
+    phoneNumberRegex = RegexValidator(regex=r'^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$')
+    basicInfo_brokerAgency_contact = models.CharField(validators=[phoneNumberRegex], max_length=20, null=True)
 
     basicInfo_room_type = models.CharField(
         choices=ROOM_TYPE, max_length=2, blank=True, null=True
@@ -172,10 +176,6 @@ class RoomInfo(models.Model):
     )  # 온수: 세다, 보통이다, 약하다
 
     ### 이미지 ###
-
-    # TODO. 이미지 처리 어떻게 할지
-
-
 class Image(models.Model):
     roomInfo = models.ForeignKey(RoomInfo, on_delete=models.CASCADE)
     image = models.ImageField(upload_to=rename_imagefile_to_uuid)
@@ -190,7 +190,6 @@ class Room(models.Model):
     room_id = models.AutoField(primary_key=True)
     roomInfo = models.OneToOneField(RoomInfo, on_delete=models.CASCADE)
     brokerAgency = models.ForeignKey(BrokerAgency, on_delete=models.CASCADE, blank=True, null=True)
-    # tag = models.ManyToManyField(Tag, blank=True, null=True)
     tag = models.ManyToManyField(Tag)
 
 

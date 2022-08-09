@@ -8,4 +8,7 @@ urlpatterns = [
     path("image/", views.ChecklistImageAPIView.as_view(actions={"post": "create", "delete" : "destroy"})),
 
     path('rooms/', views.RoomAPIView.as_view(actions={"get": "retrieve"})),
+
+    path("interest/", views.InterestAPIView.as_view(actions={"get": "list", "post": "create"})),
+    path("interest/<int:room_id>/", views.InterestAPIView.as_view(actions={"delete": "destroy"})),
 ]
