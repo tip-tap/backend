@@ -2,7 +2,6 @@ from rest_framework import serializers
 from rest_framework.utils import model_meta
 from app.models import BrokerAgency, CheckList, Image, Interest, Room, RoomInfo, Tag
 
-# RoomInfoSerializer: Created by @ssanghy on checklist
 class RoomInfoForRoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = RoomInfo
@@ -58,7 +57,12 @@ class RoomSerializer(serializers.ModelSerializer):
         if images:
             return images[0].image.url
         return []
-
+    def get_images(self, obj):
+        images = obj.roomInfo.image_set.all()
+        image_list = []
+        for i in images:
+            image_list.append(i.image.url)
+        return image_list
     def to_representation(self, instance):
         output = super().to_representation(instance)
         output["interest"] = bool(output["interest"])
