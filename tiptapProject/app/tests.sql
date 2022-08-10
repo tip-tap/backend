@@ -26,6 +26,9 @@ values (1, "뚜벅뚜벅 공인중개사", "김멋사", "010-0000-0000", "02-000
 insert into app_brokeragency (brokerAgency_id, brokerAgency_name, brokerAgency_representative_name, brokerAgency_number1, brokerAgency_number2, brokerAgency_location, brokerAgency_company_registration_number, brokerAgency_registration_number, brokerAgency_created_at, brokerAgency_updated_at)
 values (2, "이집저집 공인중개사", "박멋사", "010-1111-1111", "02-1111-1111", "서울시 성동구 왕십리로 222", 2, 2, 2022-08-08, 2022-08-08);
 
+insert into app_brokeragency (brokerAgency_id, brokerAgency_name, brokerAgency_representative_name, brokerAgency_number1, brokerAgency_number2, brokerAgency_location, brokerAgency_company_registration_number, brokerAgency_registration_number, brokerAgency_created_at, brokerAgency_updated_at)
+values (3, "해커톤파이팅 공인중개사", "박멋사", "010-7777-7777", "02-7777-7777", "서울시 성동구 왕십리로 222", 2, 2, 2022-08-08, 2022-08-08);
+
 -- Insert the room info example
 insert into app_roominfo (roominfo_id, basicInfo_location_x, basicInfo_location_y, basicInfo_brokerAgency, basicInfo_move_in_date, basicInfo_brokerAgency_contact, basicInfo_room_type, basicInfo_deposit, basicInfo_monthly_rent, basicInfo_maintenance_fee, basicInfo_floor, basicInfo_area, basicInfo_number_of_rooms, basicInfo_interior_structure, option_gas_stove, option_induction, option_microwave, option_refrigerator, option_washing_machine, option_air_conditioner, option_internet, option_tv, option_wifi, option_closet, option_cabinet, option_shoe_rack, option_bed, option_desk, option_chair, option_drying_rack)
 values (1, 37.566815192716994, 126.97865226139427, "뚜벅뚜벅 공인중개사", "즉시 입주", "010-0000-0000", "M", 10000000, 500000, 70000, 1, 8.0, "1", "O", false, true, false, true, true, true, true, false, true, false, false, true, false, false, false, false);
@@ -40,7 +43,7 @@ insert into app_roominfo (roominfo_id, basicInfo_location_x, basicInfo_location_
 values (4, 37.566269954879836, 126.97791668375864, "뚜벅뚜벅 공인중개사", "상의 후 결정", "010-0000-0000", "M", 30000000, 300000, 50000, 1, 10.0, "1", "O", true, false, false, true, true, true, true, false, true, false, false, true, false, false, false, false);
 
 insert into app_roominfo (roominfo_id, basicInfo_location_x, basicInfo_location_y, basicInfo_brokerAgency, basicInfo_move_in_date, basicInfo_brokerAgency_contact, basicInfo_room_type, basicInfo_deposit, basicInfo_monthly_rent, basicInfo_maintenance_fee, basicInfo_floor, basicInfo_area, basicInfo_number_of_rooms, basicInfo_interior_structure, option_gas_stove, option_induction, option_microwave, option_refrigerator, option_washing_machine, option_air_conditioner, option_internet, option_tv, option_wifi, option_closet, option_cabinet, option_shoe_rack, option_bed, option_desk, option_chair, option_drying_rack)
-values (5, 37.567477011641934, 126.9764787946748, "이집저집 공인중개사", "상의 후 결정", "010-1111-1111", "M", 30000000, 300000, 50000, 1, 10.0, "1", "O", true, false, false, true, true, true, true, false, true, false, false, true, false, false, false, false);
+values (5, 37.567477011641934, 126.9764787946748, "해커톤파이팅 공인중개사", "상의 후 결정", "010-7777-7777", "M", 30000000, 300000, 50000, 1, 10.0, "1", "O", true, false, false, true, true, true, true, false, true, false, false, true, false, false, false, false);
 
 insert into app_roominfo (roominfo_id, basicInfo_location_x, basicInfo_location_y, basicInfo_brokerAgency, basicInfo_move_in_date, basicInfo_brokerAgency_contact, basicInfo_room_type, basicInfo_deposit, basicInfo_monthly_rent, basicInfo_maintenance_fee, basicInfo_floor, basicInfo_area, basicInfo_number_of_rooms, basicInfo_interior_structure, option_gas_stove, option_induction, option_microwave, option_refrigerator, option_washing_machine, option_air_conditioner, option_internet, option_tv, option_wifi, option_closet, option_cabinet, option_shoe_rack, option_bed, option_desk, option_chair, option_drying_rack)
 values (6,  37.56404365078278, 126.97379169814866, "이집저집 공인중개사", "상의 후 결정", "010-1111-1111", "M", 30000000, 300000, 50000, 1, 10.0, "1", "O", true, false, false, true, true, true, true, false, true, false, false, true, false, false, false, false);
@@ -59,7 +62,7 @@ insert into app_room (room_id, roomInfo_id, brokerAgency_id)
 values (4, 4, 1);
 
 insert into app_room (room_id, roomInfo_id, brokerAgency_id)
-values (5, 5, 2);
+values (5, 5, 3);
 
 insert into app_room (room_id, roomInfo_id, brokerAgency_id)
 values (6, 6, 2);
@@ -106,6 +109,9 @@ values (1, 1, 1, 36.5);
 
 insert into app_brokersmanner (brokerManner_id, brokerAgency_id, user_id, brokersManner_score)
 values (2, 2, 1, 38.5);
+
+insert into app_brokersmanner (brokerManner_id, brokerAgency_id, user_id, brokersManner_score)
+values (3, 2, 1, 0);
 
 
 -- Insert the checklist example
