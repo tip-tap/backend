@@ -1,6 +1,6 @@
 # Backend
 
-# Installation & Usage -  bash 사용
+## Installation & Usage -  bash 사용
 ### 첫 세팅 
 ##### 1. clone -> dev branch
 `git clone -b dev --single-branch https://github.com/tip-tap/backend.git`
@@ -22,12 +22,12 @@
    - `python manage.py createsuperuser`   오류 발생시 ->  `winpty python manage.py createsuperuser`
        - username이랑 password만 입력하면 됨.  ex) username : admin  password 1234    password 1234
 
-## 이후 실행
+### 이후 실행
 - 가상환경 활성화되어있는지 확인
 - 서버 실행
 - `python manage.py runserver`
 
-## 종료
+### 종료
 - 서버 종료
    - window : ctrl + c
    - mac/linux: 모름
