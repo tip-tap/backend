@@ -1,8 +1,39 @@
 # Backend
 
-## Notice
-**2022.08.07**  
-데이터베이스 설계 수정 전 프로젝트는 'deprecated' 디렉토리에 있습니다.
+# Installation & Usage -  bash 사용
+### 첫 세팅 
+##### 1. clone -> dev branch
+`git clone -b dev --single-branch https://github.com/tip-tap/backend.git`
+- 클론 이후 디렉토리 이동 `cd backend/tiptapProject/`
+   
+##### 2. 가상환경 설치 및 설정
+- 가상환경 설치 :`python -m venv 가상환경이름`
+   - ex) `python -m venv myvenv`
+- 가상환경 활성화
+   - window : `source 가상환경이름/Scripts/activate`  - bash 사용시
+       - ex) `source myvenv/Scripts/activate`
+   - mac/linux : `source 가상환경이름/bin/activate`
+- 라이브러리 설치
+   - `pip install -r ../requirements.txt`
+##### 3. 장고 설정  (현재 폴더 위치 : backend/tiptapProject )
+- 데이터베이스(sqlite) 초기화
+   - `python manage.py migrate`
+- 관리자 등록 (원래는 안해도 돼는데, 해야 체크리스트 생성 가능해요...)
+   - `python manage.py createsuperuser`   오류 발생시 ->  `winpty python manage.py createsuperuser`
+       - username이랑 password만 입력하면 됨.  ex) username : admin  password 1234    password 1234
+
+## 이후 실행
+- 가상환경 활성화되어있는지 확인
+- 서버 실행
+- `python manage.py runserver`
+
+## 종료
+- 서버 종료
+   - window : ctrl + c
+   - mac/linux: 모름
+- 가상환경 비활성화
+   - `deactivate`
+
 
 
 ## 테스트 데이터 사용 방법
