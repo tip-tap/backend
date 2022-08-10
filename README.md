@@ -30,70 +30,50 @@
 ### 종료
 - 서버 종료
    - window : ctrl + c
-   - mac/linux: 모름
+   - mac/linux: cmd + c
 - 가상환경 비활성화
    - `deactivate`
 
 
 
-## 테스트 데이터 사용 방법
+## Test
 
-<aside>
-🚧 작성중
+### 목차
+[0. 테스트 데이터가 왜 필요한가요?](###테스트-데이터가-왜-필요한가요?)  
+[1. Superuser 생성하기](###Superuser-생성하기)  
+[2. SQLite 확장 설치하기](###SQLite-확장-설치하기)  
+[3. SQLite DB 조회 활성화하기](###SQLite-DB-조회-활성화하기)  
+[4. 테스트 데이터 SQLite에 추가하기](###테스트-데이터-DB에-추가하기)
 
-</aside>
+### 테스트 데이터가 왜 필요한가요?
 
-<aside>
-💁 Q. 테스트 데이터가 왜 필요한가요? runserver 후 POST 요청을 보내 즉석에서 테스트 데이터를 생성하면 안 되나요?
+Q. 테스트 데이터가 왜 필요한가요? 서버 실행 후 POST 요청을 보내 즉석에서 테스트 데이터를 생성하면 안 되나요?
 
-A. 매물 조회 등 일부 기능의 경우 POST 요청에 응답하지 않도록 설계되었습니다. 기본 테스트 데이터를 설정하고, POST 요청에 응답하는 API에 요청을 보내 데이터를 추가하는 것은 가능합니다!
+A. POST 요청에 응답하는 API에 요청을 보내 데이터를 추가하는 것은 가능합니다. 그러나 매물 조회 등 서비스 이용에 필요한 필수 기능 중 일부는 **POST 요청에 응답하지 않도록** 설계되었습니다. 미리 저장된 테스트 데이터를 활용하여 원활하게 테스트를 진행할 수 있도록 테스트 데이저를 제공합니다.
 
-</aside>
+### Superuser 생성하기
+⚠️ 이미 superuser를 생성했다면, 이 단계는 건너뛰세요.
 
-<aside>
-🏷️ Index
-
-1. SQLite 확장 설치하기
-2. Superuser 생성하기
-3. 테스트 데이터 추가 쿼리 실행하기
-</aside>
-
-## SQLite 확장 설치하기
-
-
-
-Visual Studio Code에서 아래 확장을 설치합니다.
-
-- 이름: SQLite
-ID: alexcvzz.vscode-sqlite
-설명: Explore and query SQLite databases.
-버전: 0.14.1
-게시자: alexcvzz
-VS Marketplace 링크: [https://marketplace.visualstudio.com/items?itemName=alexcvzz.vscode-sqlite](https://marketplace.visualstudio.com/items?itemName=alexcvzz.vscode-sqlite)
-
-## Superuser 생성하기
-
-
-
-backend/tiptapProject에서 terminal에 아래 명령어를 실행합니다
+```backend/tiptapProject```에서 terminal에 아래 명령어를 실행합니다.
 
 ```bash
 python manage.py createsuperuser
 ```
 
-<aside>
-💁 Q. 아래 주의 문구가 뜹니다. 괜찮은가요?
+<details>
+<summary>😞 System check identified some issues: WARNING</summary>
+
+Q. 아래 주의 문구가 뜹니다. 괜찮은가요?
 
 ```bash
 System check identified some issues:
-
 WARNINGS:
 ...
 ```
 
 A. 무시하고 진행하면 됩니다. 만약 실행이 정상적으로 되지 않는 경우 백엔드에게 문의해주세요.
 
-</aside>
+</details>
 
 정상 실행 시 순차적으로 아래와 같이 terminal에 입력할 수 있습니다.
 
@@ -113,17 +93,49 @@ Password (again): <사용자 비밀번호 확인>
 4. Password (again):
 위에서 입력한 비밀번호를 한 번 더 입력하고 Enter를 누릅니다.
 
-<aside>
-💁 Q. 아래 주의 문구가 뜹니다. 괜찮은가요?
+### SQLite 확장 설치하기
 
-</aside>
+Visual Studio Code에서 아래 확장을 설치합니다.
 
-```bash
+이름: SQLite  
+ID: alexcvzz.vscode-sqlite  
+설명: Explore and query SQLite databases.  
+버전: 0.14.1  
+게시자: alexcvzz  
+VS Marketplace 링크: [https://marketplace.visualstudio.com/items?itemName=alexcvzz.vscode-sqlite](https://marketplace.visualstudio.com/items?itemName=alexcvzz.vscode-sqlite)
 
-```
+### SQLite DB 조회 활성화하기
 
-## 테스트 데이터 추가 쿼리 실행하기
+vscode에서 ```backend/tiptapProject/db.sqlite3``` 파일을 엽니다.
 
+'파일이 이진이거나 지원되지 않는 텍스트 인코딩을 사용하기 때문에 편집기에서 표시되지 않습니다.' 주의 문구가 뜰 경우 '계속 열기'를 클릭하고 '텍스트 편집기'를 선택합니다.
 
+<details>
+<summary>😞 알 수 없는 글자들이 보여요</summary>
 
-backend/tiptapProject/app/tests.sql
+Q. 위 안내를 따라했는데, ```backend/tiptapProject/db.sqlite3``` 파일이 열리면서 알 수 없는 글자들이 보여요.
+
+A. 정상적인 출력입니다. 이어서 아래 작업을 수행하면 됩니다.
+
+</details>
+
+파일을 닫고, 탐색기의 ```backend/tiptapProject/db.sqlite3``` 위에 오른쪽 마우스 클릭 후 'Open Database'를 클릭합니다.
+
+탐색기 하단에 'SQLITE EXPLORER' 기능이 추가됩니다. 해당 기능을 사용해 테이블을 조회하고 쿼리를 작성하여 DB에 반영할 수 있습니다.
+
+### 테스트 데이터 추가 쿼리 실행하기
+
+vscode에서 ```backend/tiptapProject/app/tests.sql``` 파일을 엽니다.
+
+열린 파일 위에서 오른쪽 마우스를 클릭하고 'Run Query'를 클릭합니다.
+
+<details>
+<summary>😞 오류가 발생하면서 적용되지 않은 쿼리가 있어요</summary>
+
+Q. 'Run Query'를 클릭해 sql 파일을 실행했는데, 오류가 발생하여 DB를 조회하니 모든 쿼리가 반영되지 않은듯합니다.
+
+A. 잘못된 쿼리가 포함되어 있을 가능성이 높습니다. 백엔드에게 문의해주세요.
+
+</details>
+
+테스트 데이터가 DB에 추가되었습니다.
