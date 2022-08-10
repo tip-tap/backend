@@ -25,7 +25,7 @@ class BrokerAgency(models.Model):
 
 class BrokersManner(models.Model):
     brokerManner_id = models.AutoField(primary_key=True)
-    brokerAgency = models.ForeignKey(BrokerAgency, on_delete=models.CASCADE)
+    brokerAgency = models.ForeignKey(BrokerAgency, on_delete=models.CASCADE, related_name='brokerAgency')
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE
     )
