@@ -1,3 +1,4 @@
+
 query = """insert into app_tag (tag_id, tag_name)
 values (1, "시청역 4번 출구");
 
@@ -105,9 +106,7 @@ insert into app_brokersmanner (brokerManner_id, brokerAgency_id, user_id, broker
 values (2, 2, 1, 38.5);
 
 insert into app_brokersmanner (brokerManner_id, brokerAgency_id, user_id, brokersManner_score)
-values (3, 2, 1, 0);
-"""
-
+values (3, 2, 1, 0);"""
 import sqlite3
 
 if __name__ == "__main__":
@@ -115,8 +114,11 @@ if __name__ == "__main__":
     conn = sqlite3.connect('db.sqlite3')
     for q in querys:
         cur = conn.cursor()
-        cur.execute(q)
-        conn.commit()
+        try:
+            cur.execute(q)
+            conn.commit()
+        except:
+            pass
         cur.close()
 
     conn.close()
