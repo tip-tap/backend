@@ -177,7 +177,7 @@ class InterestAPIView(ModelViewSet):
         room_id = request.data.get('room_id', 1)
         if self.is_duplicate(room_id, 1):
             response_data = {
-                "message": "관심매물 추가 살패"
+                "message": "관심매물 추가 실패"
             }
 
             return Response(
