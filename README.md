@@ -110,10 +110,16 @@ vscode에서 ```backend/tiptapProject/db.sqlite3``` 파일을 엽니다.
 
 '파일이 이진이거나 지원되지 않는 텍스트 인코딩을 사용하기 때문에 편집기에서 표시되지 않습니다.' 주의 문구가 뜰 경우 '계속 열기'를 클릭하고 '텍스트 편집기'를 선택합니다.
 
+![SQLite-DB-조회-활성화하기-1](https://github.com/4-002602/tip-tap-backend-readme-images/blob/main/SQLite-DB-조회-활성화하기-1.png)
+
+![SQLite-DB-조회-활성화하기-2](https://github.com/4-002602/tip-tap-backend-readme-images/blob/main/SQLite-DB-조회-활성화하기-2.png)
+
 <details>
 <summary>😞 알 수 없는 글자들이 보여요</summary>
 
 Q. 위 안내를 따라했는데, ```backend/tiptapProject/db.sqlite3``` 파일이 열리면서 알 수 없는 글자들이 보여요.
+
+![SQLite-DB-조회-활성화하기-3](https://github.com/4-002602/tip-tap-backend-readme-images/blob/main/SQLite-DB-조회-활성화하기-3.png)
 
 A. 정상적인 출력입니다. 이어서 아래 작업을 수행하면 됩니다.
 
@@ -121,13 +127,19 @@ A. 정상적인 출력입니다. 이어서 아래 작업을 수행하면 됩니�
 
 파일을 닫고, 탐색기의 ```backend/tiptapProject/db.sqlite3``` 위에 오른쪽 마우스 클릭 후 'Open Database'를 클릭합니다.
 
+![SQLite-DB-조회-활성화하기-4](https://github.com/4-002602/tip-tap-backend-readme-images/blob/main/SQLite-DB-조회-활성화하기-4.png)
+
 탐색기 하단에 'SQLITE EXPLORER' 기능이 추가됩니다. 해당 기능을 사용해 테이블을 조회하고 쿼리를 작성하여 DB에 반영할 수 있습니다.
+
+![SQLite-DB-조회-활성화하기-5](https://github.com/4-002602/tip-tap-backend-readme-images/blob/main/SQLite-DB-조회-활성화하기-5.png)
 
 ### 테스트 데이터 추가 쿼리 실행하기
 
 vscode에서 ```backend/tiptapProject/app/tests.sql``` 파일을 엽니다.
 
 열린 파일 위에서 오른쪽 마우스를 클릭하고 'Run Query'를 클릭합니다.
+
+![테스트-데이터-추가-쿼리-실행하기-1](https://github.com/4-002602/tip-tap-backend-readme-images/blob/main/테스트-데이터-추가-쿼리-실행하기-1.png)
 
 <details>
 <summary>😞 오류가 발생하면서 적용되지 않은 쿼리가 있어요</summary>
