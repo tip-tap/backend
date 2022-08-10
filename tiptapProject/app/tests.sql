@@ -85,10 +85,10 @@ VALUES (6, 3, 4);
 
 -- Insert the image example
 INSERT INTO app_image (id, image, roomInfo_id)
-VALUES (1, "media/image/3e4edf1d81104b01a3b9779858090bbf.jpg", 1);
+VALUES (1, "image/3e4edf1d81104b01a3b9779858090bbf.jpg", 1);
 
 INSERT INTO app_image (id, image, roomInfo_id)
-VALUES (2, "media/image/3e4edf1d81104b01a3b9779858090bbf.jpg", 2);
+VALUES (2, "image/3e4edf1d81104b01a3b9779858090bbf.jpg", 2);
 
 -- Insert the interest example
 INSERT INTO app_interest (interest_id, room_id, user_id)
