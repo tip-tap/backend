@@ -100,7 +100,6 @@ class ChecklistSerializer(serializers.ModelSerializer):
         exclude = ('user',)
 
     def create(self, validated_data):
-        super().create()
         roomInfo = RoomInfo.objects.create(**validated_data.pop('roomInfo'))
         room = validated_data.get("room")
         for image in self.context['request'].FILES.getlist('image'):
