@@ -53,7 +53,7 @@ class RoomAPIView(ReadOnlyModelViewSet):
         response_data = {"total": len(serializer.data), "rooms": serializer.data}
         return Response(response_data)"""
     
-    def retrieve(self, request, *args, **kwargs):
+    def list(self, request, *args, **kwargs):
         """
         queryset = self.filter_queryset(self.get_queryset())
         serializer = self.get_serializer(queryset, many=True)
