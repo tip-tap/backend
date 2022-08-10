@@ -99,3 +99,10 @@ VALUES (2, 3, 1);
 
 INSERT INTO app_interest (interest_id, room_id, user_id)
 VALUES (3, 6, 1);
+
+-- Insert the brokersmanner example
+INSERT INTO app_brokersmanner (brokerManner_id, brokerAgency_id, user_id, brokersManner_score)
+VALUES (1, 1, 1, 36.5);
+
+INSERT INTO app_brokersmanner (brokerManner_id, brokerAgency_id, user_id, brokersManner_score)
+VALUES (2, 2, 1, 38.5);
