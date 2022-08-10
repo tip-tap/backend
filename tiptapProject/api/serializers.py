@@ -184,3 +184,6 @@ class InterestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
         exclude = ('brokerAgency',)
+
+class ComfiredRoomSerializer(serializers.ModelSerializer):
+    pass

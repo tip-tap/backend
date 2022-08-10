@@ -6,8 +6,8 @@ from rest_framework.response import Response
 
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
-from api.serializers import ChecklistSerializer, ImageSerializer, InterestSerializer
-from app.models import CheckList, Image, Interest
+from api.serializers import ChecklistSerializer, ImageSerializer, InterestSerializer, ComfiredRoomSerializer
+from app.models import CheckList, Image, Interest, ConfirmedRoom
 from app.utils import remove_image
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
@@ -211,4 +211,24 @@ class InterestAPIView(ModelViewSet):
         return Response(
             response_data,
             status=status.HTTP_204_NO_CONTENT,
+        )
+
+class ConfirmedRoomAPIView(ModelViewSet):
+    queryset = CheckList.objects.all()
+    serializer_class = ComfiredRoomSerializer
+    def create(self, request, *args, **kwargs):
+        # TODO : 중복제거 로직 추가
+
+        checklist_id = request.data.get('checklist_id')
+        checklist = super().get_queryset().get(checklist_id=checklist_id)
+        confirmedRoom = ConfirmedRoom(user_id=1, room_id= checklist.room_id, checklist_id=checklist_id) # user_id = checklist.user_id
+        confirmedRoom.save()
+
+        response_data = {
+            "message": "확정매물 추가 성공"
+        }
+
+        return Response(
+            response_data,
+            status=status.HTTP_201_CREATED,
         )

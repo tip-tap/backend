@@ -11,4 +11,7 @@ urlpatterns = [
 
     path("interest/", views.InterestAPIView.as_view(actions={"get": "list", "post": "create"})),
     path("interest/<int:room_id>/", views.InterestAPIView.as_view(actions={"delete": "destroy"})),
+
+    path("confirm/", views.ConfirmedRoomAPIView.as_view(actions={"post": "create"})),
+
 ]
