@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.utils import model_meta
-from app.models import BrokerAgency, CheckList, Image, Interest, Room, RoomInfo, Tag
+from app.models import BrokerAgency, CheckList, Image, Interest, Room, RoomInfo, Tag, BrokersManner
 
 
 class RoomInfoForRoomSerializer(serializers.ModelSerializer):
@@ -34,10 +34,31 @@ class TagSerializer(serializers.ModelSerializer):
             return instance.tag_name
 
 
+class BrokersMannerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BrokersManner
+        fields = ('brokersManner_score',)
+
+
 class BrokerAgencySerializer(serializers.ModelSerializer):
     class Meta:
         model = BrokerAgency
         fields = ('brokerAgency_id', 'brokerAgency_name', 'brokerAgency_number1')
+
+
+class BrokerAgencyForRoomSerializer(serializers.ModelSerializer):
+    brokerAgency_manner = BrokersMannerSerializer(read_only=True, many=True, source='brokerAgency')
+    class Meta:
+        model = BrokerAgency
+        fields = ('brokerAgency_name', 'brokerAgency_number1', 'brokerAgency_manner')
+    
+    def to_representation(self, instance):
+        output = super().to_representation(instance)
+        if output["brokerAgency_manner"]:
+            output["brokerAgency_manner"] = str(sum([d["brokersManner_score"] for d in output["brokerAgency_manner"]]) / len(output["brokerAgency_manner"]))
+        else:
+            output["brokerAgency_manner"] = "?"
+        return output
 
 
 class InterestForRoomSerializer(serializers.ModelSerializer):
@@ -54,6 +75,7 @@ class RoomSerializer(serializers.ModelSerializer):
     tag = TagSerializer(many=True, read_only=True)
     thumbnail = serializers.SerializerMethodField()
     images = serializers.SerializerMethodField()
+    brokerAgency = BrokerAgencyForRoomSerializer()
 
     def get_thumbnail(self, obj):
         images = obj.roomInfo.image_set.all()
@@ -75,7 +97,7 @@ class RoomSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Room
-        exclude = ('brokerAgency',)
+        exclude = ()
 
 
 class RoomInfoSerializer(serializers.ModelSerializer):
