@@ -217,8 +217,13 @@ class ConfirmedRoomAPIView(ModelViewSet):
     queryset = CheckList.objects.all()
     serializer_class = ComfiredRoomSerializer
 
-    def is_duplicate(self, user_id, room_id, checklist_id):
-        confirmedRooms = list(ConfirmedRoom.objects.filter(user_id=user_id, room_id=room_id, checklist_id=checklist_id))
+    # AS-IS: 같은 유저가 같은 체크리스트에 대해서 중복으로 확정 매물을 추가할 경우 이를 방지
+    # TO-BE: 유저 한 명당 확정 매물은 한 개만 추가할 수 있도록 변경
+
+    # def is_duplicate(self, user_id, room_id, checklist_id):
+        # confirmedRooms = list(ConfirmedRoom.objects.filter(user_id=user_id, room_id=room_id, checklist_id=checklist_id))
+    def is_duplicate(self, user_id):
+        confirmedRooms = list(ConfirmedRoom.objects.filter(user_id=user_id))
         if not confirmedRooms:
             return False
         else:
@@ -228,8 +233,10 @@ class ConfirmedRoomAPIView(ModelViewSet):
         checklist_id = request.data.get('checklist_id')
         checklist = super().get_queryset().get(checklist_id=checklist_id)
         room_id = checklist.room_id
-        # user_id = checklist.user_id
-        if self.is_duplicate(1, room_id, checklist_id):
+        user_id = 1 #checklist.user_id
+
+        # if self.is_duplicate(1, room_id, checklist_id):
+        if self.is_duplicate(user_id):
             response_data = {
                 "message": "확정매물 추가 실패"
             }
@@ -239,7 +246,7 @@ class ConfirmedRoomAPIView(ModelViewSet):
                 status=status.HTTP_409_CONFLICT
             )
         else:
-            confirmedRoom = ConfirmedRoom(user_id=1, room_id=checklist.room_id, checklist_id=checklist_id)
+            confirmedRoom = ConfirmedRoom(user_id=user_id, room_id=room_id, checklist_id=checklist_id)
             confirmedRoom.save()
             response_data = {
                 "message": "확정매물 추가 성공"
@@ -249,7 +256,3 @@ class ConfirmedRoomAPIView(ModelViewSet):
                 response_data,
                 status=status.HTTP_201_CREATED,
             )
-
-
-
-
