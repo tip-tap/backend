@@ -161,8 +161,8 @@ class InterestAPIView(ModelViewSet):
             raise Http404
 
     def is_duplicate(self, room_id, user_id):
-        interest = list(Interest.objects.filter(room_id=room_id, user_id=user_id))
-        if not interest:
+        interests = list(Interest.objects.filter(room_id=room_id, user_id=user_id))
+        if not interests:
             return False
         else:
             return True
@@ -182,7 +182,7 @@ class InterestAPIView(ModelViewSet):
 
             return Response(
                 response_data,
-                status=status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_409_CONFLICT
             )
 
         else:
@@ -216,19 +216,40 @@ class InterestAPIView(ModelViewSet):
 class ConfirmedRoomAPIView(ModelViewSet):
     queryset = CheckList.objects.all()
     serializer_class = ComfiredRoomSerializer
-    def create(self, request, *args, **kwargs):
-        # TODO : 중복제거 로직 추가
 
+    def is_duplicate(self, user_id, room_id, checklist_id):
+        confirmedRooms = list(ConfirmedRoom.objects.filter(user_id=user_id, room_id=room_id, checklist_id=checklist_id))
+        if not confirmedRooms:
+            return False
+        else:
+            return True
+
+    def create(self, request, *args, **kwargs):
         checklist_id = request.data.get('checklist_id')
         checklist = super().get_queryset().get(checklist_id=checklist_id)
-        confirmedRoom = ConfirmedRoom(user_id=1, room_id= checklist.room_id, checklist_id=checklist_id) # user_id = checklist.user_id
-        confirmedRoom.save()
+        room_id = checklist.room_id
+        # user_id = checklist.user_id
+        if self.is_duplicate(1, room_id, checklist_id):
+            response_data = {
+                "message": "확정매물 추가 실패"
+            }
 
-        response_data = {
-            "message": "확정매물 추가 성공"
-        }
+            return Response(
+                response_data,
+                status=status.HTTP_409_CONFLICT
+            )
+        else:
+            confirmedRoom = ConfirmedRoom(user_id=1, room_id=checklist.room_id, checklist_id=checklist_id)
+            confirmedRoom.save()
+            response_data = {
+                "message": "확정매물 추가 성공"
+            }
 
-        return Response(
-            response_data,
-            status=status.HTTP_201_CREATED,
-        )
+            return Response(
+                response_data,
+                status=status.HTTP_201_CREATED,
+            )
+
+
+
+
