@@ -219,5 +219,5 @@ class ConfirmedRoom(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE
     )
-    room = models.ForeignKey(Room, on_delete=models.DO_NOTHING)
+    room = models.ForeignKey(Room, null=True, on_delete=models.DO_NOTHING)
     checklist = models.ForeignKey(CheckList, on_delete=models.CASCADE)
