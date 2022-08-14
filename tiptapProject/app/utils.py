@@ -1,6 +1,7 @@
 import os
 from typing import Tuple, List
 from uuid import uuid4
+from django.utils import timezone
 
 # 이미지 필드 이름 변경 (원래 파일 이름 -> uuid)
 import app
@@ -26,3 +27,6 @@ def remove_image(url):
 def string_to_list(loc: str) -> tuple([list([str]), list([str]), list([str])]):
     locs = loc.replace("[", "").replace("]", "").replace(" ", "").split(",")
     return [locs[0], locs[1]], [locs[2], locs[3]], [locs[4], locs[5]]
+
+def local_time():
+    return timezone.localtime(timezone.now())
