@@ -36,8 +36,6 @@ class BrokersManner(models.Model):
 class RoomInfo(models.Model):
     roominfo_id = models.AutoField(primary_key=True)
 
-    roominfo_updated_at = models.DateTimeField(auto_now=True)
-
     ### 기본 정보 ###
     ROOM_TYPE = [
         ("J", "Jeonse"),
@@ -191,9 +189,11 @@ class Tag(models.Model):
 ### 매물 ###
 class Room(models.Model):
     room_id = models.AutoField(primary_key=True)
+    room_created_at = models.DateTimeField(auto_now_add=True)
     roomInfo = models.OneToOneField(RoomInfo, on_delete=models.CASCADE)
     brokerAgency = models.ForeignKey(BrokerAgency, on_delete=models.CASCADE, blank=True, null=True)
     tag = models.ManyToManyField(Tag)
+    
 
 
 ### 체크리스트 ###
