@@ -63,6 +63,7 @@ class RoomInfo(models.Model):
 
     basicInfo_location_x = models.DecimalField(max_digits=10, decimal_places=7) # 위도
     basicInfo_location_y = models.DecimalField(max_digits=10, decimal_places=7) # 경도
+    basicInfo_address = models.TextField(blank=True, null=True) # 주소
 
     # TODO: 공인중개사 어떻게 할지(공인중개사 필드를 텍스트로 두고, 매물의 경우 공인중개사 정보를 텍스트로 가져올 수 있어야 함)
     basicInfo_brokerAgency = models.TextField(blank=True, null=True) # 공인중개사
@@ -188,9 +189,11 @@ class Tag(models.Model):
 ### 매물 ###
 class Room(models.Model):
     room_id = models.AutoField(primary_key=True)
+    room_created_at = models.DateTimeField(auto_now_add=True)
     roomInfo = models.OneToOneField(RoomInfo, on_delete=models.CASCADE)
     brokerAgency = models.ForeignKey(BrokerAgency, on_delete=models.CASCADE, blank=True, null=True)
     tag = models.ManyToManyField(Tag)
+    
 
 
 ### 체크리스트 ###
