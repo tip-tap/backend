@@ -36,6 +36,8 @@ class BrokersManner(models.Model):
 class RoomInfo(models.Model):
     roominfo_id = models.AutoField(primary_key=True)
 
+    roominfo_updated_at = models.DateTimeField(auto_now=True)
+
     ### 기본 정보 ###
     ROOM_TYPE = [
         ("J", "Jeonse"),
@@ -63,6 +65,7 @@ class RoomInfo(models.Model):
 
     basicInfo_location_x = models.DecimalField(max_digits=10, decimal_places=7) # 위도
     basicInfo_location_y = models.DecimalField(max_digits=10, decimal_places=7) # 경도
+    basicInfo_address = models.TextField(blank=True, null=True) # 주소
 
     # TODO: 공인중개사 어떻게 할지(공인중개사 필드를 텍스트로 두고, 매물의 경우 공인중개사 정보를 텍스트로 가져올 수 있어야 함)
     basicInfo_brokerAgency = models.TextField(blank=True, null=True) # 공인중개사
