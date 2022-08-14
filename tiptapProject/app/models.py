@@ -2,7 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.core.validators import RegexValidator
 
-from .utils import rename_imagefile_to_uuid
+from .utils import rename_imagefile_to_uuid, local_time
 
 
 
@@ -186,14 +186,14 @@ class Tag(models.Model):
     tag_id = models.AutoField(primary_key=True)
     tag_name = models.CharField(max_length=20)
 
+
 ### 매물 ###
 class Room(models.Model):
     room_id = models.AutoField(primary_key=True)
-    room_created_at = models.DateTimeField(auto_now_add=True)
+    room_created_at = models.DateTimeField(default=local_time, editable=False)
     roomInfo = models.OneToOneField(RoomInfo, on_delete=models.CASCADE)
     brokerAgency = models.ForeignKey(BrokerAgency, on_delete=models.CASCADE, blank=True, null=True)
     tag = models.ManyToManyField(Tag)
-    
 
 
 ### 체크리스트 ###
