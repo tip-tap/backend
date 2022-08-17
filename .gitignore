@@ -7,9 +7,9 @@
 *.pyc
 __pycache__/
 local_settings.py
-db.sqlite3
+# db.sqlite3
 db.sqlite3-journal
-media
+# media
 
 
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/
@@ -561,7 +561,7 @@ coverage.xml
 # Django stuff:
 *.log
 local_settings.py
-db.sqlite3
+# db.sqlite3
 db.sqlite3-journal
 
 # Flask stuff:
@@ -630,3 +630,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+### Custom ###
+# Sample image data
+image_data/
