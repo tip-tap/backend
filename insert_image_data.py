@@ -5,6 +5,7 @@ from uuid import uuid4
 
 from tiptapProject.settings import BASE_DIR, MEDIA_ROOT
 
+random.seed(42)
 
 def rename_imagefile_to_uuid(roominfo, filename):
     upload_to = f'image/{roominfo}'  # 업로드 위치
