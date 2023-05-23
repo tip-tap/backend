@@ -1,153 +1,77 @@
-# Backend
+# 🏠 이집저집
+## 프로젝트 소개
 
-## Installation & Usage -  bash 사용
-### 첫 세팅 
-##### 1. clone -> dev branch
-`git clone -b dev --single-branch https://github.com/tip-tap/backend.git`
-- 클론 이후 디렉토리 이동 `cd backend/tiptapProject/`
+<div align="center">   
+    <img src="https://github.com/byeongjaeSon/tiptap-backend/assets/80969604/579ca67f-945b-4c62-b884-753b855bb42f" width="280px"/>
+    <h3> 간편하게 기록하고 똑똑하게 비교하자 !</h3>
+</div>
+
+> 멋쟁이 사자처럼 10주년 해커톤 뚜벅뚜벅(tip-tap) 팀의 <이집저집> 서비스는 대학생들이 처음 자취방을 구할 때 종종 겪는 어려움에 착안하여 기획 및 개발되었습니다. 매물 체크리스트 템플릿 제공, 주변시설 정보, 매물검색 및 필터링 등의 기능을 통해 좋은 방의 기준을 제공해주고, 보다 효율적으로 발품 내역을 기록하게 도와줍니다.
    
-##### 2. 가상환경 설치 및 설정
-- 가상환경 설치 :`python -m venv 가상환경이름`
-   - ex) `python -m venv myvenv`
-- 가상환경 활성화
-   - window : `source 가상환경이름/Scripts/activate`  - bash 사용시
-       - ex) `source myvenv/Scripts/activate`
-   - mac/linux : `source 가상환경이름/bin/activate`
-- 라이브러리 설치
-   - `pip install -r ../requirements.txt`
-##### 3. 장고 설정  (현재 폴더 위치 : backend/tiptapProject )
-- 데이터베이스(sqlite) 초기화
-   - `python manage.py migrate`
-- 관리자 등록 (원래는 안해도 돼는데, 해야 체크리스트 생성 가능해요...)
-   - `python manage.py createsuperuser`   오류 발생시 ->  `winpty python manage.py createsuperuser`
-       - username이랑 password만 입력하면 됨.  ex) username : admin  password 1234    password 1234
+<br/>
 
-### 이후 실행
-- 가상환경 활성화되어있는지 확인
-- 서버 실행
-- `python manage.py runserver`
+## 🔗 배포 URL
 
-### 종료
-- 서버 종료
-   - window : ctrl + c
-   - mac/linux: cmd + c
-- 가상환경 비활성화
-   - `deactivate`
+아래 URL에 접속하여 <이집저집> 서비스를 직접 체험해보세요 🙌 : <br/>
+~https://web-frontend-13082024l70fh50f.gksl1.cloudtype.app/~ 
+
+<br/>
+
+## 💻 개발 인원 및 기간
+🤗 **개발 인원**
+  - 기획 및 디자인 1명 [@tip-tap/figma](https://www.figma.com/file/cA5MyugW7AR5VS6Wduax9w/%ED%95%B4%EC%BB%A4%ED%86%A4-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%99%84%EC%84%B1)
+  - 프론트엔드 2명 [@tip-tap/frontend](https://github.com/tip-tap/frontend)
+  - 백엔드 3명 [@tip-tap/backend](https://github.com/tip-tap/frontend)
+  
+⏰ **개발 기간**
+  - 2022.06.20 ~ 2022.08.19
+
+<br/>
+
+## 🛠 백엔드 적용 기술
+Python3 / Django / sqlite
+
+<br/>
 
 
+## 🎞 데모 영상 및 기능 소개
+### ✅ 체크리스트 생성
+- 방문한 매물을 보다 자세하게 체크해볼 수 있는 **체크리스트 템플릿을 제공**합니다.
+- 템플릿을 기반으로 직접 체크리스트를 채워넣거나 공인중개사가 작성해둔 체크리스트를 불러와서 수정할 수 있습니다.
 
-## Test
+<img width="70%" src="https://user-images.githubusercontent.com/59408502/187060523-34dcb430-fc56-48d3-9dd3-6c9dac346ec0.gif" />
 
-### 목차
-[0. 테스트 데이터가 왜 필요한가요?](###테스트-데이터가-왜-필요한가요?)  
-[1. Superuser 생성하기](###Superuser-생성하기)  
-[2. SQLite 확장 설치하기](###SQLite-확장-설치하기)  
-[3. SQLite DB 조회 활성화하기](###SQLite-DB-조회-활성화하기)  
-[4. 테스트 데이터 SQLite에 추가하기](###테스트-데이터-DB에-추가하기)
+### ✅ 매물 체크리스트 비교
+- [체크리스트] - [리스트로 보기]를 통해 방문한 **여러 매물의 체크리스트를 한 눈에 모아서 비교**해볼 수 있습니다.
+- 기본정보/옵션/세부정보 중 **보고싶은 정보만 필터링** 해서, 또는 **체크리스트 정렬순서를 간편하게 드래그앤드롭으로 바꿔가며 비교**해보세요.
+- 체크리스트를 클릭하면 상세 수정 페이지로 이동하며 매물을 확정할 수도 있습니다.
 
-### 테스트 데이터가 왜 필요한가요?
+<img width="70%" src="https://user-images.githubusercontent.com/59408502/187061193-649826fb-7d22-45bf-982c-6933b0e38eeb.gif" />
 
-Q. 테스트 데이터가 왜 필요한가요? 서버 실행 후 POST 요청을 보내 즉석에서 테스트 데이터를 생성하면 안 되나요?
+### ✅ 주변 시설 정보 확인
+- [체크리스트] - [지도로 보기], [매물검색] - [지도로 보기], 또는 매물 상세페이지에서 자유롭게 주변 시설을 확인할 수 있습니다.
+- 지하철, 병원, 약국, 음식점, 카페 등 방을 구할 때 고려해야할 **주변 시설 정보를 카테고리별로 필터링하여 조회** 가능합니다.
+- **마커 마우스오버 시 인포윈도우를 통해 해당 시설의 간단한 정보 또한 확인**할 수 있습니다.
 
-A. POST 요청에 응답하는 API에 요청을 보내 데이터를 추가하는 것은 가능합니다. 그러나 매물 조회 등 서비스 이용에 필요한 필수 기능 중 일부는 **POST 요청에 응답하지 않도록** 설계되었습니다. 미리 저장된 테스트 데이터를 활용하여 원활하게 테스트를 진행할 수 있도록 테스트 데이저를 제공합니다.
+<img width="70%" src="https://user-images.githubusercontent.com/59408502/187062267-1165ecb6-5997-4f0f-b0e0-2b6ce17f2a5b.gif" />
 
-### Superuser 생성하기
-⚠️ 이미 superuser를 생성했다면, 이 단계는 건너뛰세요.
+### ✅ 매물 검색 및 관심 매물
+- 원하는 조건에 알맞게 **등록된 매물을 필터링하여 검색**하고 구경해보세요.  
+- 매물검색 또한 [지도로 보기] 및 [리스트로 보기] 두 가지 뷰를 제공합니다.
+- 보다 자세한 매물 정보를 확인하기 위해서는 **지도의 마커 혹은 리스트의 세부정보 확인하기 버튼을 클릭**해주세요.  
+- 마음에 드는 매물은 **관심 매물로 등록**할 수도 있습니다.
 
-```backend/tiptapProject```에서 terminal에 아래 명령어를 실행합니다.
+<img width="70%" src="https://user-images.githubusercontent.com/59408502/187062057-40ca1c57-96e2-4732-957b-9143c7b7a8d4.gif" />
 
-```bash
-python manage.py createsuperuser
+
+### 📂 프로젝트 관련 문서
+
+```
+깃허브 외부에 있는 이집저집 관련 문서들의 목록과 링크입니다!
 ```
 
-<details>
-<summary>😞 System check identified some issues: WARNING</summary>
+[🎨 디자인](https://www.figma.com/file/cA5MyugW7AR5VS6Wduax9w/%ED%95%B4%EC%BB%A4%ED%86%A4-%EB%94%94%EC%9E%90%EC%9D%B8-%EC%99%84%EC%84%B1)
 
-Q. 아래 주의 문구가 뜹니다. 괜찮은가요?
+[📡 API 명세서](https://wild-airedale-d68.notion.site/API-Documentation-d2b0c858a1b143ccad0df0c877d7169b)
 
-```bash
-System check identified some issues:
-WARNINGS:
-...
-```
-
-A. 무시하고 진행하면 됩니다. 만약 실행이 정상적으로 되지 않는 경우 백엔드에게 문의해주세요.
-
-</details>
-
-정상 실행 시 순차적으로 아래와 같이 terminal에 입력할 수 있습니다.
-
-```bash
-Username: <사용자 이름>
-Email address: <사용자 이메일>
-Password: <사용자 비밀번호>
-Password (again): <사용자 비밀번호 확인>
-```
-
-1. Username:
-원하는 이름을 입력하고 Enter를 누릅니다.
-2. Email address:
-아무것도 입력하지 않고 Enter를 누릅니다.
-3. Password:
-원하는 비밀번호를 입력하고 Enter를 누릅니다.
-4. Password (again):
-위에서 입력한 비밀번호를 한 번 더 입력하고 Enter를 누릅니다.
-
-### SQLite 확장 설치하기
-
-Visual Studio Code에서 아래 확장을 설치합니다.
-
-이름: SQLite  
-ID: alexcvzz.vscode-sqlite  
-설명: Explore and query SQLite databases.  
-버전: 0.14.1  
-게시자: alexcvzz  
-VS Marketplace 링크: [https://marketplace.visualstudio.com/items?itemName=alexcvzz.vscode-sqlite](https://marketplace.visualstudio.com/items?itemName=alexcvzz.vscode-sqlite)
-
-### SQLite DB 조회 활성화하기
-
-vscode에서 ```backend/tiptapProject/db.sqlite3``` 파일을 엽니다.
-
-'파일이 이진이거나 지원되지 않는 텍스트 인코딩을 사용하기 때문에 편집기에서 표시되지 않습니다.' 주의 문구가 뜰 경우 '계속 열기'를 클릭하고 '텍스트 편집기'를 선택합니다.
-
-![SQLite-DB-조회-활성화하기-1](https://github.com/4-002602/tip-tap-backend-readme-images/blob/main/SQLite-DB-조회-활성화하기-1.png)
-
-![SQLite-DB-조회-활성화하기-2](https://github.com/4-002602/tip-tap-backend-readme-images/blob/main/SQLite-DB-조회-활성화하기-2.png)
-
-<details>
-<summary>😞 알 수 없는 글자들이 보여요</summary>
-
-Q. 위 안내를 따라했는데, ```backend/tiptapProject/db.sqlite3``` 파일이 열리면서 알 수 없는 글자들이 보여요.
-
-![SQLite-DB-조회-활성화하기-3](https://github.com/4-002602/tip-tap-backend-readme-images/blob/main/SQLite-DB-조회-활성화하기-3.png)
-
-A. 정상적인 출력입니다. 이어서 아래 작업을 수행하면 됩니다.
-
-</details>
-
-파일을 닫고, 탐색기의 ```backend/tiptapProject/db.sqlite3``` 위에 오른쪽 마우스 클릭 후 'Open Database'를 클릭합니다.
-
-![SQLite-DB-조회-활성화하기-4](https://github.com/4-002602/tip-tap-backend-readme-images/blob/main/SQLite-DB-조회-활성화하기-4.png)
-
-탐색기 하단에 'SQLITE EXPLORER' 기능이 추가됩니다. 해당 기능을 사용해 테이블을 조회하고 쿼리를 작성하여 DB에 반영할 수 있습니다.
-
-![SQLite-DB-조회-활성화하기-5](https://github.com/4-002602/tip-tap-backend-readme-images/blob/main/SQLite-DB-조회-활성화하기-5.png)
-
-### 테스트 데이터 추가 쿼리 실행하기
-
-vscode에서 ```backend/tiptapProject/app/tests.sql``` 파일을 엽니다.
-
-열린 파일 위에서 오른쪽 마우스를 클릭하고 'Run Query'를 클릭합니다.
-
-![테스트-데이터-추가-쿼리-실행하기-1](https://github.com/4-002602/tip-tap-backend-readme-images/blob/main/테스트-데이터-추가-쿼리-실행하기-1.png)
-
-<details>
-<summary>😞 오류가 발생하면서 적용되지 않은 쿼리가 있어요</summary>
-
-Q. 'Run Query'를 클릭해 sql 파일을 실행했는데, 오류가 발생하여 DB를 조회하니 모든 쿼리가 반영되지 않은듯합니다.
-
-A. 잘못된 쿼리가 포함되어 있을 가능성이 높습니다. 백엔드에게 문의해주세요.
-
-</details>
-
-테스트 데이터가 DB에 추가되었습니다.
+[🗒 타임라인 및 회고록](https://wild-airedale-d68.notion.site/36d90572c1a74d1fb02c72b3a6f3660d)
